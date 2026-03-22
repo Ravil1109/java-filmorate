@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ProblemDetail;
+import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
@@ -23,10 +25,13 @@ public class FilmController {
     @PostMapping
     public ResponseEntity<Film> addFilm(@Valid @RequestBody Film film) {
         log.info("Начато создание фильма {}", film);
+
         try {
-            return new ResponseEntity(filmService.create(film), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(filmService.create(film), HttpStatus.CREATED);
+        } catch (ValidationException e) {
+            ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            detail.setTitle(e.getMessage());
+            return ResponseEntity.of(detail).build();
         }
     }
 
@@ -34,10 +39,13 @@ public class FilmController {
     @PutMapping
     public ResponseEntity<Film> saveFilm(@Valid @RequestBody Film film) {
         log.info("Начато обновление фильма {}", film);
+
         try {
             return new ResponseEntity(filmService.update(film), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (ValidationException e) {
+            ProblemDetail detail = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            detail.setTitle(e.getMessage());
+            return ResponseEntity.of(detail).build();
         }
     }
 
@@ -45,10 +53,6 @@ public class FilmController {
     @GetMapping
     public ResponseEntity<List<Film>> getFilms() {
         log.info("Начато получение всех фильмов");
-        try {
-            return new ResponseEntity(filmService.getFilms(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity(filmService.getFilms(), HttpStatus.OK);
     }
 }

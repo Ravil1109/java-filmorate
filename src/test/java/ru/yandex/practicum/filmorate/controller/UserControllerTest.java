@@ -28,7 +28,7 @@ public class UserControllerTest extends BaseControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().json(responseBody));
     }
 

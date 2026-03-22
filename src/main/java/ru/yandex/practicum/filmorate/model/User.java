@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = {"id"})
 public class User extends BaseModel {
     @NotBlank
     @Email

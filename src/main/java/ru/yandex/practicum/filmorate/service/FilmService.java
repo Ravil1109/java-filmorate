@@ -12,7 +12,7 @@ import java.util.List;
 @Slf4j
 @Service
 public class FilmService {
-    private static final LocalDate MIN_RELEASE_DATE = LocalDate.of(1895, 12, 8);
+    private static final LocalDate MIN_RELEASE_DATE = LocalDate.of(1895, 12, 28);
     private final BaseHandler<Film> films = new BaseHandler<>();
 
     public Film create(@Valid Film film) {

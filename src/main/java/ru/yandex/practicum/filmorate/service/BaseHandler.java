@@ -22,7 +22,7 @@ public class BaseHandler<T extends BaseModel> {
         if (base instanceof Film) {
             log.info("Фильм сохранен {}", base);
         } else if (base instanceof User) {
-            log.info("Фильм сохранен {}", base);
+            log.info("Пользователь сохранен {}", base);
         }
 
         return map.get(idx);

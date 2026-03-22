@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @AutoConfigureMockMvc
@@ -28,12 +29,12 @@ public class FilmControllerTest extends BaseControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().json(responseBody));
     }
 
     @Test
-    void createStatusBad() throws Exception {
+    void createStatusBadForReleaseDate() throws Exception {
         String requestBody = getContentFromFile("create/request/filmBadForReleaseDate.json");
 
         mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, PATH)

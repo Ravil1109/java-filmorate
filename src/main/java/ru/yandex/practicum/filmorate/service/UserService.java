@@ -36,6 +36,11 @@ public class UserService {
             user.setName(user.getLogin());
         }
 
+        if (user.getLogin().contains(" ")) {
+            log.error("Логин не должен содержать пробелы");
+            throw new ValidationException("Логин не должен содержать пробелы");
+        }
+
         if (user.getBirthday().isAfter(LocalDate.now())) {
             log.error("Дата рождения не может быть в будущем");
             throw new ValidationException("Дата рождения не может быть в будущем");

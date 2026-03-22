@@ -15,11 +15,10 @@ import jakarta.validation.constraints.NotBlank;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = {"id"})
 public class Film extends BaseModel {
     @NotBlank
     private String name; //Название
-    @Size(min = 1, max = 200)
+    @Size(max = 200)
     private String description;    //Описание
     @NonNull
     private LocalDate releaseDate; //Дата релиза
