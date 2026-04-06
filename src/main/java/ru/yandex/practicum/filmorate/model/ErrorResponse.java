@@ -8,9 +8,9 @@ import lombok.RequiredArgsConstructor;
 @Builder
 public class ErrorResponse {
     // название ошибки
-    final private String error;
+    private final String error;
     // подробное описание
-    final private String description;
+    private final String description;
 
     // геттеры необходимы, чтобы Spring Boot мог получить значения полей
     public String getError() {
