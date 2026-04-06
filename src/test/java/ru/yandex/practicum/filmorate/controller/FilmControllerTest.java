@@ -39,7 +39,7 @@ public class FilmControllerTest extends BaseControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(MockMvcResultMatchers.status().isInternalServerError());
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test

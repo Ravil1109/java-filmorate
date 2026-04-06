@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * User.
@@ -22,6 +24,8 @@ public class User extends BaseModel {
     private String name;  //Имя для отображения
     @NonNull
     private LocalDate birthday; //Дата рождения
+    @Builder.Default
+    private Set<Integer> friends = new HashSet<>(); // Множество ID друзей пользователя
 }
 
 
