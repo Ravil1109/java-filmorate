@@ -39,6 +39,14 @@ public class UserController {
                 .body(userService.update(user));
     }
 
+    //Получение пользователя.
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUser(@PathVariable Integer id) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(userService.getUser(id));
+    }
+
     //Получение списка всех пользователей.
     @GetMapping
     public ResponseEntity<List<User>> getUsers() {

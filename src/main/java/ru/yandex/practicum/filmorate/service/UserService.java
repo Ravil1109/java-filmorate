@@ -17,27 +17,31 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final InMemoryUserStorage storage;
+    private final InMemoryUserStorage storageUsers;
 
     public User create(@Valid User user) {
         validate(user);
 
-        return storage.create(user);
+        return storageUsers.create(user);
     }
 
     public User update(@Valid User user) {
         validate(user);
 
-        return storage.update(user);
+        return storageUsers.update(user);
+    }
+
+    public User getUser(Integer userId) {
+        return storageUsers.getUserById(userId);
     }
 
     public List<User> getUsers() {
-        return storage.getList();
+        return storageUsers.getList();
     }
 
     public void addFriend(Integer userId, Integer friendId) {
-        User user = storage.getUserById(userId);
-        User friend = storage.getUserById(friendId);
+        User user = storageUsers.getUserById(userId);
+        User friend = storageUsers.getUserById(friendId);
 
         user.getFriends().add(friendId);
         friend.getFriends().add(userId);
@@ -46,8 +50,8 @@ public class UserService {
     }
 
     public void removeFriend(Integer userId, Integer friendId) {
-        User user = storage.getUserById(userId);
-        User friend = storage.getUserById(friendId);
+        User user = storageUsers.getUserById(userId);
+        User friend = storageUsers.getUserById(friendId);
 
         if (!user.getFriends().contains(friendId)) {
             log.warn("Пользователь {} не является другом пользователя {}", friendId, userId);
@@ -61,20 +65,20 @@ public class UserService {
     }
 
     public List<User> getFriends(Integer userId) {
-        User user = storage.getUserById(userId);
+        User user = storageUsers.getUserById(userId);
 
         return user.getFriends().stream()
-                .map(storage::getUserById)
+                .map(storageUsers::getUserById)
                 .collect(Collectors.toList());
     }
 
     public List<User> getCommonFriends(Integer userId, Integer otherId) {
-        User user = storage.getUserById(userId);
-        User otherUser = storage.getUserById(otherId);
+        User user = storageUsers.getUserById(userId);
+        User otherUser = storageUsers.getUserById(otherId);
 
         return user.getFriends().stream()
                 .filter(otherUser.getFriends()::contains)
-                .map(storage::getUserById)
+                .map(storageUsers::getUserById)
                 .collect(Collectors.toList());
     }
 

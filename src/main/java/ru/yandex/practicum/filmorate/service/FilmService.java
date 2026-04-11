@@ -35,6 +35,10 @@ public class FilmService {
         return storageFilms.update(film);
     }
 
+    public Film getFilm(Integer filmId) {
+        return storageFilms.getFilmById(filmId);
+    }
+
     public List<Film> getFilms() {
         return storageFilms.getList();
     }
@@ -43,8 +47,12 @@ public class FilmService {
         Film film = storageFilms.getFilmById(filmId);
         User user = storageUsers.getUserById(userId); //Необходимо для проверки пользователя в хранилище
 
-        film.getLikes().add(userId);
-        log.info("Пользователь {} поставил лайк фильму {}", userId, filmId);
+        if (!film.getLikes().contains(userId)) {
+            film.getLikes().add(userId);
+            log.info("Пользователь {} поставил лайк фильму {}", userId, filmId);
+        } else {
+            log.info("Пользователь {} ранее уже ставил лайк к фильму {}", userId, filmId);
+        }
     }
 
     public void removeLike(Integer filmId, Integer userId) {

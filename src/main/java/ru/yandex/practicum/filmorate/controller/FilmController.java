@@ -4,9 +4,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
 import java.util.List;
@@ -33,6 +35,14 @@ public class FilmController {
         log.info("Начато обновление фильма {}", film);
 
         return new ResponseEntity(filmService.update(film), HttpStatus.OK);
+    }
+
+    //Получение фильма.
+    @GetMapping("/{id}")
+    public ResponseEntity<Film> getFilm(@PathVariable Integer id) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(filmService.getFilm(id));
     }
 
     //Получение всех фильмов

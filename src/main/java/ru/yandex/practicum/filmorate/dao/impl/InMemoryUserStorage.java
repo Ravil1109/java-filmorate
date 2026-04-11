@@ -2,7 +2,7 @@ package ru.yandex.practicum.filmorate.dao.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.dao.Storage;
+import ru.yandex.practicum.filmorate.dao.UserStorage;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Slf4j
 @Component
-public class InMemoryUserStorage implements Storage<User> {
+public class InMemoryUserStorage implements UserStorage {
     private final Map<Integer, User> map = new HashMap<>();
 
     @Override
@@ -42,11 +42,12 @@ public class InMemoryUserStorage implements Storage<User> {
 
     @Override
     public void delete(Integer index) {
-        if (!map.containsKey(index)) {
+        if (map.containsKey(index)) {
             map.remove(index);
             log.info("Пользователь с идентификатором {} удален", index);
         } else {
             log.error("Пользователь с идентификатором {} не найдена", index);
+            throw new NotFoundException(String.format("Пользователь с идентификатором %d не найден", index));
         }
     }
 
