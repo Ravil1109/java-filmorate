@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.validation.constraints.NotBlank;
 
@@ -24,4 +26,6 @@ public class Film extends BaseModel {
     private LocalDate releaseDate; //Дата релиза
     @Min(1)
     private Integer duration;      //Продолжительность фильма
+    @Builder.Default
+    private Set<Integer> likes = new HashSet<>(); // Множество ID пользователей, которые поставили лайк фильму
 }

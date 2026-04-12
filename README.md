@@ -1,2 +1,12 @@
 # java-filmorate
-Template repository for Filmorate project.
+Приложение позволяет оценивать фильмы
+
+## Модель данных
+
+[Схема базы данных](./src/main/resources/database_schema.png) включает таблицы:
+- `users` — пользователи
+- `films` — фильмы
+- `genres` — справочник жанров
+- `ratings` — справочник рейтингов
+- `film_likes` — лайки пользователей к фильмам
+- `friends` — дружеские связи между пользователями
