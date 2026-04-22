@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.dto.UserAddRequestDTO;
+import ru.yandex.practicum.filmorate.dto.UserResponseDTO;
+import ru.yandex.practicum.filmorate.dto.UserUpdRequestDTO;
 import ru.yandex.practicum.filmorate.service.UserService;
 
 import java.util.List;
@@ -21,7 +23,7 @@ public class UserController {
 
     //Создание пользователя;
     @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserAddRequestDTO user) {
 
         log.info("Начато создание пользователя {}", user);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -31,7 +33,7 @@ public class UserController {
 
     //Обновление пользователя;
     @PutMapping
-    public ResponseEntity<User> saveUser(@Valid @RequestBody User user) {
+    public ResponseEntity<UserResponseDTO> saveUser(@Valid @RequestBody UserUpdRequestDTO user) {
 
         log.info("Начато обновление пользователя {}", user);
         return ResponseEntity.status(HttpStatus.OK)
@@ -41,7 +43,7 @@ public class UserController {
 
     //Получение пользователя.
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable Integer id) {
+    public ResponseEntity<UserResponseDTO> getUser(@PathVariable Long id) throws Exception {
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(userService.getUser(id));
@@ -49,15 +51,15 @@ public class UserController {
 
     //Получение списка всех пользователей.
     @GetMapping
-    public ResponseEntity<List<User>> getUsers() {
+    public ResponseEntity<List<UserResponseDTO>> listUsers() {
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(userService.getUsers());
+                .body(userService.listUsers());
     }
 
     // Добавление в друзья
     @PutMapping("/{id}/friends/{friendId}")
-    public ResponseEntity<Void> addFriend(@PathVariable Integer id, @PathVariable Integer friendId) {
+    public ResponseEntity<Void> addFriend(@PathVariable Long id, @PathVariable Long friendId) throws Exception {
         log.info("Пользователь {} добавляет в друзья пользователя {}", id, friendId);
         userService.addFriend(id, friendId);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -65,22 +67,26 @@ public class UserController {
 
     // Удаление из друзей
     @DeleteMapping("/{id}/friends/{friendId}")
-    public ResponseEntity<Void> removeFriend(@PathVariable Integer id, @PathVariable Integer friendId) {
+    public ResponseEntity<Void> removeFriend(@PathVariable Long id, @PathVariable Long friendId) throws Exception {
         log.info("Пользователь {} удаляет из друзей пользователя {}", id, friendId);
-        userService.removeFriend(id, friendId);
+        userService.deleteFriend(id, friendId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // Получение списка друзей пользователя
     @GetMapping("/{id}/friends")
-    public ResponseEntity<List<User>> getFriends(@PathVariable Integer id) {
+    public ResponseEntity<List<UserResponseDTO>> getFriends(@PathVariable Long id) throws Exception {
         log.info("Запрос списка друзей пользователя {}", id);
-        return new ResponseEntity<>(userService.getFriends(id), HttpStatus.OK);
+
+        List<UserResponseDTO> friends = userService.getFriends(id);
+
+        log.info("Список друзей пользователя {}: {}", id, friends);
+        return new ResponseEntity<>(friends, HttpStatus.OK);
     }
 
     // Получение списка общих друзей с другим пользователем
     @GetMapping("/{id}/friends/common/{otherId}")
-    public ResponseEntity<List<User>> getCommonFriends(@PathVariable Integer id, @PathVariable Integer otherId) {
+    public ResponseEntity<List<UserResponseDTO>> getCommonFriends(@PathVariable Long id, @PathVariable Long otherId) throws Exception {
         log.info("Запрос общих друзей пользователей {} и {}", id, otherId);
         return new ResponseEntity<>(userService.getCommonFriends(id, otherId), HttpStatus.OK);
     }

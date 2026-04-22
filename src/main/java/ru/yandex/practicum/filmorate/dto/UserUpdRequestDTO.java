@@ -1,25 +1,26 @@
-package ru.yandex.practicum.filmorate.model;
+package ru.yandex.practicum.filmorate.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NonNull;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(of = {"id"})
-public class User {
+public class UserUpdRequestDTO {
+    @NonNull
     protected Long id;
+    @NotBlank
+    @Email
     private String email;
+    @NotBlank
     private String login;
     private String name;
+    @NonNull
     private LocalDate birthday;
-    private List<Long> friends = new ArrayList<>();
 }
 
 

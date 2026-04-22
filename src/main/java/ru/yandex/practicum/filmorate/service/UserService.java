@@ -4,82 +4,96 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.dao.impl.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.dao.UserStorage;
+import ru.yandex.practicum.filmorate.dto.UserAddRequestDTO;
+import ru.yandex.practicum.filmorate.dto.UserResponseDTO;
+import ru.yandex.practicum.filmorate.dto.UserUpdRequestDTO;
+import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
+import ru.yandex.practicum.filmorate.mapping.UserMapping;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
-    private final InMemoryUserStorage storageUsers;
+    private final UserStorage storageUsers;
 
-    public User create(@Valid User user) {
+    public UserResponseDTO create(@Valid UserAddRequestDTO userDto) {
+        User user = UserMapping.dtoToModal(userDto);
         validate(user);
 
-        return storageUsers.create(user);
+        Optional<User> target = storageUsers.create(user);
+        log.info("Пользователь сохранен {}", user);
+
+        return UserMapping.modalToDto(target.get());
     }
 
-    public User update(@Valid User user) {
+    public UserResponseDTO update(@Valid UserUpdRequestDTO userDto) {
+        User user = UserMapping.dtoToModal(userDto);
+
         validate(user);
 
-        return storageUsers.update(user);
+        Optional<User> target = storageUsers.update(user);
+        log.info("Пользователь обновлен {}", user);
+
+        return UserMapping.modalToDto(target.get());
     }
 
-    public User getUser(Integer userId) {
-        return storageUsers.getUserById(userId);
+    public UserResponseDTO getUser(Long userId) throws Exception {
+        Optional<User> target = storageUsers.get(userId);
+        validateOptional(target, userId);
+
+        return UserMapping.modalToDto(target.get());
     }
 
-    public List<User> getUsers() {
-        return storageUsers.getList();
+    public List<UserResponseDTO> listUsers() {
+        return UserMapping.listModalToDto(storageUsers.getList());
     }
 
-    public void addFriend(Integer userId, Integer friendId) {
-        User user = storageUsers.getUserById(userId);
-        User friend = storageUsers.getUserById(friendId);
+    public void addFriend(Long userId, Long friendId) throws Exception {
+        Optional<User> user = storageUsers.get(userId);
+        Optional<User> friend = storageUsers.get(friendId);
+        validateOptional(user, userId);
+        validateOptional(friend, friendId);
 
-        user.getFriends().add(friendId);
-        friend.getFriends().add(userId);
+        storageUsers.addFriend(userId, friendId);
 
         log.info("Пользователь {} и пользователь {} теперь друзья", userId, friendId);
     }
 
-    public void removeFriend(Integer userId, Integer friendId) {
-        User user = storageUsers.getUserById(userId);
-        User friend = storageUsers.getUserById(friendId);
+    public void deleteFriend(Long userId, Long friendId) throws Exception {
+        Optional<User> user = storageUsers.get(userId);
+        Optional<User> friend = storageUsers.get(friendId);
+        validateOptional(user, userId);
+        validateOptional(friend, friendId);
 
-        if (!user.getFriends().contains(friendId)) {
-            log.warn("Пользователь {} не является другом пользователя {}", friendId, userId);
-            //throw new NotFoundException("Пользователь не является другом");
-        }
-
-        user.getFriends().remove(friendId);
-        friend.getFriends().remove(userId);
+        storageUsers.deleteFriend(userId, friendId);
 
         log.info("Пользователь {} и пользователь {} больше не друзья", userId, friendId);
     }
 
-    public List<User> getFriends(Integer userId) {
-        User user = storageUsers.getUserById(userId);
+    public List<UserResponseDTO> getFriends(Long userId) throws Exception {
+        Optional<User> user = storageUsers.get(userId);
+        validateOptional(user, userId);
 
-        return user.getFriends().stream()
-                .map(storageUsers::getUserById)
-                .collect(Collectors.toList());
+        List<User> list = storageUsers.getFriends(userId);
+
+        return UserMapping.listModalToDto(list);
     }
 
-    public List<User> getCommonFriends(Integer userId, Integer otherId) {
-        User user = storageUsers.getUserById(userId);
-        User otherUser = storageUsers.getUserById(otherId);
+    public List<UserResponseDTO> getCommonFriends(Long userId, Long otherId) throws Exception {
+        Optional<User> user = storageUsers.get(userId);
+        Optional<User> otherUser = storageUsers.get(otherId);
+        validateOptional(user, userId);
+        validateOptional(otherUser, otherId);
 
-        return user.getFriends().stream()
-                .filter(otherUser.getFriends()::contains)
-                .map(storageUsers::getUserById)
-                .collect(Collectors.toList());
+        return UserMapping.listModalToDto(storageUsers.getCommonFriends(userId, otherId));
     }
 
     private void validate(User user) throws ValidationException {
@@ -95,6 +109,14 @@ public class UserService {
         if (user.getBirthday().isAfter(LocalDate.now())) {
             log.error("Дата рождения не может быть в будущем");
             throw new ValidationException("Дата рождения не может быть в будущем");
+        }
+    }
+
+    public static void validateOptional(Optional<User> user, Long userId) throws Exception {
+
+        if (user.isEmpty()) {
+            log.error("Пользователь с идентификатором {} не найден", userId);
+            throw new NotFoundException(String.format("Пользователь с идентификатором %d не найден", userId));
         }
     }
 }

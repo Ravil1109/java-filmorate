@@ -1,7 +1,7 @@
 {
   "id": 1,
-  "login": "ramuk",
-  "name": "Ravil Mukhametshin",
-  "email": "ra@mail.ru",
-  "birthday": "1989-09-11"
+  "email": "karl@example.com",
+  "login": "karl_doe",
+  "name": "Карл Доу",
+  "birthday": "1991-05-15"
 }

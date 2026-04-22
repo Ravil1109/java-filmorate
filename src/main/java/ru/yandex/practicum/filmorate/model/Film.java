@@ -5,8 +5,8 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
 
@@ -17,15 +17,14 @@ import jakarta.validation.constraints.NotBlank;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Film extends BaseModel {
-    @NotBlank
-    private String name; //Название
-    @Size(max = 200)
-    private String description;    //Описание
-    @NonNull
-    private LocalDate releaseDate; //Дата релиза
-    @Min(1)
-    private Integer duration;      //Продолжительность фильма
-    @Builder.Default
-    private Set<Integer> likes = new HashSet<>(); // Множество ID пользователей, которые поставили лайк фильму
+@EqualsAndHashCode(of = {"id"})
+public class Film {
+    protected Long id;
+    private String name;
+    private String description;
+    private LocalDate releaseDate;
+    private Integer duration;
+    private List<Long> likes = new ArrayList<>();
+    private Mpa mpa;
+    private List<Genre> genres = new ArrayList<>();
 }

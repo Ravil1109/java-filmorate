@@ -11,8 +11,6 @@ public class ErrorResponse {
     private final String error;
     // подробное описание
     private final String description;
-
-    // геттеры необходимы, чтобы Spring Boot мог получить значения полей
     public String getError() {
         return error;
     }
