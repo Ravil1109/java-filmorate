@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.UserStorage;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.model.entity.UserEntity;
 
 import java.util.HashMap;
 import java.util.List;
