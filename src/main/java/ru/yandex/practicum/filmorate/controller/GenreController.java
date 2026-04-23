@@ -29,8 +29,11 @@ public class GenreController {
     //Получение списка всех жанров
     @GetMapping
     public ResponseEntity<Set<GenreResponseDTO>> listGenres() {
+        Set<GenreResponseDTO> set = genreService.listGenres();
+        System.out.println("XXX "+set);
+
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(genreService.listGenres());
+                .body(set);
     }
 }

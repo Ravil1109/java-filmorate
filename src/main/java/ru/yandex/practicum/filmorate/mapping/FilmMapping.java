@@ -112,7 +112,8 @@ public class FilmMapping {
                             .id(g.getId())
                             .name(g.getName())
                             .build())
-                    .collect(Collectors.toSet()));
+                    .sorted(Comparator.comparing(GenreResponseDTO::getId))
+                    .collect(Collectors.toCollection(LinkedHashSet::new)));
 
         }
 

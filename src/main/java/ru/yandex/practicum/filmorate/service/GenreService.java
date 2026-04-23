@@ -7,6 +7,8 @@ import ru.yandex.practicum.filmorate.dao.GenreStorage;
 import ru.yandex.practicum.filmorate.dto.GenreResponseDTO;
 import ru.yandex.practicum.filmorate.model.Genre;
 
+import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,6 +34,7 @@ public class GenreService {
                         .id(mpa.getId())
                         .name(mpa.getName())
                         .build())
-                .collect(Collectors.toSet());
+                .sorted(Comparator.comparing(GenreResponseDTO::getId))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }
