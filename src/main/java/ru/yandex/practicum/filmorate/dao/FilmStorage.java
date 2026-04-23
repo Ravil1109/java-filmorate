@@ -4,6 +4,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface FilmStorage {
     Optional<Film> create(Film base);
@@ -16,7 +17,7 @@ public interface FilmStorage {
 
     Optional<Film> get(Long id);
 
-    List<Long> getLikes(Long filmId);
+    Set<Long> getLikes(Long filmId);
 
     void addLike(Long filmId, Long userId);
 

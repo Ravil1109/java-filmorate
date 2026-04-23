@@ -7,7 +7,8 @@ import ru.yandex.practicum.filmorate.dao.MpaStorage;
 import ru.yandex.practicum.filmorate.dto.MpaResponseDTO;
 import ru.yandex.practicum.filmorate.model.Mpa;
 
-import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -25,12 +26,12 @@ public class MpaService {
                 .build();
     }
 
-    public List<MpaResponseDTO> listMpa() {
-        List<Mpa> listMpa = storage.getList();
+    public Set<MpaResponseDTO> listMpa() {
+        Set<Mpa> listMpa = storage.getList();
         return listMpa.stream().map(mpa -> MpaResponseDTO.builder()
                         .id(mpa.getId())
                         .name(mpa.getName())
                         .build())
-                        .toList();
+                        .collect(Collectors.toSet());
     }
 }

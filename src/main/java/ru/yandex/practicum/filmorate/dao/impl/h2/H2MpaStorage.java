@@ -13,6 +13,8 @@ import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.model.entity.MpaEntity;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Primary
@@ -23,10 +25,10 @@ public class H2MpaStorage implements MpaStorage {
     private final MpaStorageMapper mapper;
 
     @Override
-    public List<Mpa> getList() {
+    public Set<Mpa> getList() {
         String sql = "select * from mpa order by id";
         List<MpaEntity> entityList = jdbcTemplate.query(sql, mapper);
-        return entityList.stream().map(mapper::toModel).toList();
+        return entityList.stream().map(mapper::toModel).collect(Collectors.toSet());
     }
 
     @Override

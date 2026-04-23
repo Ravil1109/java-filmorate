@@ -21,6 +21,8 @@ import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Primary
@@ -129,15 +131,15 @@ public class H2FilmStorage implements FilmStorage {
     }
 
     @Override
-    public List<Long> getLikes(Long filmId) {
+    public Set<Long> getLikes(Long filmId) {
         String query = "select user_id from film_likes where film_id = ?";
         List<Long> entityList = jdbcTemplate.query(query, (rs, rowNum) -> rs.getLong("user_id"), filmId);
-        return entityList.stream().toList();
+        return entityList.stream().collect(Collectors.toSet());
     }
 
     @Override
     public void addLike(Long filmId, Long userId) {
-        List<Long> likes = getLikes(filmId);
+        Set<Long> likes = getLikes(filmId);
 
         if (!likes.contains(userId)) {
             String query = "insert into film_likes (film_id, user_id) " +
@@ -155,7 +157,7 @@ public class H2FilmStorage implements FilmStorage {
     public void deleteLike(Long filmId, Long userId) {
         Optional<Film> film = get(filmId);
 
-        List<Long> likes = getLikes(filmId);
+        Set<Long> likes = getLikes(filmId);
         if (!likes.contains(userId)) {
             log.error("Пользователь {} ранее не ставил лайк к фильму {}", userId, filmId);
             throw new NotFoundException(String.format("Не удалось удалить лайк пользователя %d фильма %d", userId, filmId));

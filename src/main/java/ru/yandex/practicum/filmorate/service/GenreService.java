@@ -7,7 +7,8 @@ import ru.yandex.practicum.filmorate.dao.GenreStorage;
 import ru.yandex.practicum.filmorate.dto.GenreResponseDTO;
 import ru.yandex.practicum.filmorate.model.Genre;
 
-import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -25,12 +26,12 @@ public class GenreService {
                 .build();
     }
 
-    public List<GenreResponseDTO> listGenres() {
-        List<Genre> listGenre = storage.getList();
+    public Set<GenreResponseDTO> listGenres() {
+        Set<Genre> listGenre = storage.getList();
         return listGenre.stream().map(mpa -> GenreResponseDTO.builder()
                         .id(mpa.getId())
                         .name(mpa.getName())
                         .build())
-                .toList();
+                .collect(Collectors.toSet());
     }
 }

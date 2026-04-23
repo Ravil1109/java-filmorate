@@ -42,7 +42,7 @@ public class H2UserStorage implements UserStorage {
             stmt.setString(1, entity.getLogin());
             stmt.setString(2, entity.getName());
             stmt.setString(3, entity.getEmail());
-            stmt.setDate(4, Date.valueOf(entity.getBirthday()));
+            stmt.setDate(4, entity.getBirthday() != null ? Date.valueOf(entity.getBirthday()) : null);
 
             return stmt;
         }, keyHolder);
@@ -105,7 +105,10 @@ public class H2UserStorage implements UserStorage {
 
     @Override
     public void addFriend(Long userId, Long friendId) {
-        List<User> friends = getFriends(userId);
+        List<Long> friends = getFriends(userId)
+                .stream()
+                .map(User::getId)
+                .toList();
 
         if (!friends.contains(friendId)) {
             String query = "insert into friends (user_id, friend_id) " +
@@ -121,10 +124,12 @@ public class H2UserStorage implements UserStorage {
 
     @Override
     public void deleteFriend(Long userId, Long friendId) {
-        List<User> friends = getFriends(userId);
+        List<Long> friends = getFriends(userId)
+                .stream()
+                .map(User::getId)
+                .toList();
 
-
-        if (friends.contains(User.builder().id(friendId).build())) {
+        if (friends.contains(friendId)) {
             String query = "delete from friends " +
                     "where user_id = ? and friend_id = ?";
             jdbcTemplate.update(query, userId, friendId);

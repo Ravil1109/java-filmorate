@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.dto.GenreResponseDTO;
 import ru.yandex.practicum.filmorate.service.GenreService;
 
-import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -28,7 +28,7 @@ public class GenreController {
 
     //Получение списка всех жанров
     @GetMapping
-    public ResponseEntity<List<GenreResponseDTO>> listGenres() {
+    public ResponseEntity<Set<GenreResponseDTO>> listGenres() {
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(genreService.listGenres());

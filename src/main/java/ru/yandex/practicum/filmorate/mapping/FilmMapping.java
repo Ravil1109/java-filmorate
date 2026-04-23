@@ -5,8 +5,8 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Mpa;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class FilmMapping {
     public static Film dtoToModal(FilmAddRequestDTO filmDto) {
@@ -19,7 +19,7 @@ public class FilmMapping {
                 .description(filmDto.getDescription())
                 .releaseDate(filmDto.getReleaseDate())
                 .duration(filmDto.getDuration())
-                .likes(new ArrayList<>())
+                .likes(new HashSet<>())
                 .build();
 
         if (filmDto.getMpa() != null) {
@@ -29,7 +29,7 @@ public class FilmMapping {
         }
 
         if (filmDto.getGenres() != null) {
-            List<Genre> genres = new ArrayList<>();
+            Set<Genre> genres = new HashSet<>();
 
             filmDto.getGenres().forEach(genreDto -> {
                 Genre genre = Genre.builder()
@@ -58,7 +58,7 @@ public class FilmMapping {
                 .description(filmDto.getDescription())
                 .releaseDate(filmDto.getReleaseDate())
                 .duration(filmDto.getDuration())
-                .likes(new ArrayList<>())
+                .likes(new HashSet<>())
                 .build();
 
         if (filmDto.getMpa() != null) {
@@ -68,7 +68,7 @@ public class FilmMapping {
         }
 
         if (filmDto.getGenres() != null) {
-            List<Genre> genres = new ArrayList<>();
+            Set<Genre> genres = new HashSet<>();
 
             filmDto.getGenres().forEach(genreDto -> {
                 if (!genres.contains(genreDto)) {
@@ -112,7 +112,7 @@ public class FilmMapping {
                             .id(g.getId())
                             .name(g.getName())
                             .build())
-                    .toList());
+                    .collect(Collectors.toSet()));
 
         }
 

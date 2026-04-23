@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.filmorate.dto.MpaResponseDTO;
 import ru.yandex.practicum.filmorate.service.MpaService;
 
-import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -31,7 +31,7 @@ public class MpaController {
 
     //Получение списка всех рейтингов
     @GetMapping
-    public ResponseEntity<List<MpaResponseDTO>> listMpa() {
+    public ResponseEntity<Set<MpaResponseDTO>> listMpa() {
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(mpaService.listMpa());

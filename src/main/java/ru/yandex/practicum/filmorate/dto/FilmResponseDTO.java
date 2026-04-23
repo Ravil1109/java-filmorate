@@ -3,8 +3,8 @@ package ru.yandex.practicum.filmorate.dto;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Builder
@@ -15,6 +15,6 @@ public class FilmResponseDTO {
     private LocalDate releaseDate;
     private Integer duration;
     private MpaResponseDTO mpa;
-    private List<GenreResponseDTO> genres = new ArrayList<>();
+    private Set<GenreResponseDTO> genres = new HashSet<>();
 
 }

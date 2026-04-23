@@ -14,6 +14,8 @@ import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.entity.GenreEntity;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Primary
@@ -24,11 +26,11 @@ public class H2GenreStorage implements GenreStorage {
     private final GenreStorageMapper mapper;
 
     @Override
-    public List<Genre> getList() {
+    public Set<Genre> getList() {
         String sql = "select * from genres order by id asc";
         List<GenreEntity> entityList = jdbcTemplate.query(sql, mapper);
 
-        return entityList.stream().map(mapper::toModel).toList();
+        return entityList.stream().map(mapper::toModel).collect(Collectors.toSet());
     }
 
     @Override
@@ -48,14 +50,14 @@ public class H2GenreStorage implements GenreStorage {
     }
 
     @Override
-    public List<Genre> getList(Long filmId) {
+    public Set<Genre> getList(Long filmId) {
         String sql = "select g.* " +
                 "from film_genres fg, genres g " +
                 "where fg.genre_id = g.id and fg.film_id = ? " +
                 "order by g.id asc";
         List<GenreEntity> entityList = jdbcTemplate.query(sql, mapper, filmId);
 
-        return entityList.stream().map(mapper::toModel).toList();
+        return entityList.stream().map(mapper::toModel).collect(Collectors.toSet());
     }
 
     @Override

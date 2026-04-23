@@ -6,8 +6,8 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Builder
@@ -26,6 +26,6 @@ public class FilmUpdRequestDTO {
     private MpaRequestDTO mpa;
 
     @Builder.Default
-    private List<GenreRequestDTO> genres = new ArrayList<>();
+    private Set<GenreRequestDTO> genres = new HashSet<>();
 
 }

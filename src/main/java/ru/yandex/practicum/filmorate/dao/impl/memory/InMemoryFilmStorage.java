@@ -58,7 +58,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public List<Long> getLikes(Long filmId) {
+    public Set<Long> getLikes(Long filmId) {
         return map.get(filmId).getLikes();
     }
 
