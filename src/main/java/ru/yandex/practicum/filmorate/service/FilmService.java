@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.service;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dao.FilmStorage;
 import ru.yandex.practicum.filmorate.dao.MpaStorage;
@@ -26,8 +27,13 @@ import java.util.Optional;
 public class FilmService {
     private static final LocalDate MIN_RELEASE_DATE = LocalDate.of(1895, 12, 28);
 
+    @Qualifier("H2FilmStorage")
     private final FilmStorage storageFilms;
+
+    @Qualifier("H2UserStorage")
     private final UserStorage storageUsers;
+
+    @Qualifier("H2MpaStorage")
     private final MpaStorage storageMpa;
 
     public FilmResponseDTO create(@Valid FilmAddRequestDTO filmDto) throws Exception {

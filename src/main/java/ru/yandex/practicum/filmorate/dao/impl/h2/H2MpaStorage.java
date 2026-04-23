@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.dao.MpaStorage;
 import ru.yandex.practicum.filmorate.dao.impl.h2.mappers.MpaStorageMapper;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
@@ -14,10 +14,10 @@ import ru.yandex.practicum.filmorate.model.entity.MpaEntity;
 
 import java.util.List;
 
-@Primary
 @Slf4j
-@Component
+@Primary
 @RequiredArgsConstructor
+@Repository
 public class H2MpaStorage implements MpaStorage {
     private final JdbcTemplate jdbcTemplate;
     private final MpaStorageMapper mapper;

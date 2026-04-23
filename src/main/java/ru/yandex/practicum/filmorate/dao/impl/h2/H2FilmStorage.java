@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.dao.FilmStorage;
 import ru.yandex.practicum.filmorate.dao.GenreStorage;
 import ru.yandex.practicum.filmorate.dao.MpaStorage;
@@ -22,10 +22,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-@Primary
 @Slf4j
-@Component
+@Primary
 @RequiredArgsConstructor
+@Repository
 public class H2FilmStorage implements FilmStorage {
     private final JdbcTemplate jdbcTemplate;
     private final FilmStorageMapper mapper;

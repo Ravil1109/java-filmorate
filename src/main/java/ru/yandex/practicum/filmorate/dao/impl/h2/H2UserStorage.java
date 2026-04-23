@@ -7,7 +7,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.dao.UserStorage;
 import ru.yandex.practicum.filmorate.dao.impl.h2.mappers.UserStorageMapper;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
@@ -20,12 +20,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-@Primary
 @Slf4j
-@Component
+@Primary
 @RequiredArgsConstructor
+@Repository
 public class H2UserStorage implements UserStorage {
     private final JdbcTemplate jdbcTemplate;
+
     private final UserStorageMapper mapper;
 
     @Override
