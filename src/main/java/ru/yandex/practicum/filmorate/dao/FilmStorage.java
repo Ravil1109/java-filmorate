@@ -1,14 +1,27 @@
 package ru.yandex.practicum.filmorate.dao;
 
 import ru.yandex.practicum.filmorate.model.Film;
+
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 public interface FilmStorage {
-    public Film create(Film base);
+    Optional<Film> create(Film base);
 
-    public Film update(Film base);
+    Optional<Film> update(Film base);
 
-    public void delete(Integer index);
+    void delete(Long id);
 
-    public List<Film> getList();
+    List<Film> getList();
+
+    Optional<Film> get(Long id);
+
+    Set<Long> getLikes(Long filmId);
+
+    void addLike(Long filmId, Long userId);
+
+    void deleteLike(Long filmId, Long userId);
+
+    List<Film> getPopularFilms(Integer count);
 }

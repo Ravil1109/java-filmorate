@@ -1,31 +1,23 @@
 package ru.yandex.practicum.filmorate.model;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.validation.constraints.NotBlank;
-
-/**
- * Film.
- */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Film extends BaseModel {
-    @NotBlank
-    private String name; //Название
-    @Size(max = 200)
-    private String description;    //Описание
-    @NonNull
-    private LocalDate releaseDate; //Дата релиза
-    @Min(1)
-    private Integer duration;      //Продолжительность фильма
-    @Builder.Default
-    private Set<Integer> likes = new HashSet<>(); // Множество ID пользователей, которые поставили лайк фильму
+@EqualsAndHashCode(of = {"id"})
+public class Film {
+    protected Long id;
+    private String name;
+    private String description;
+    private LocalDate releaseDate;
+    private Integer duration;
+    private Set<Long> likes = new HashSet<>();
+    private Mpa mpa;
+    private Set<Genre> genres = new HashSet<>();
 }

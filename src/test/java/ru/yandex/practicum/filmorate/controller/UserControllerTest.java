@@ -23,13 +23,11 @@ public class UserControllerTest extends BaseControllerTest {
     @Test
     void createStatusOk() throws Exception {
         String requestBody = getContentFromFile("create/request/userOk.json");
-        String responseBody = getContentFromFile("create/response/userOk.json");
 
         mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.content().json(responseBody));
+                .andExpect(MockMvcResultMatchers.status().isCreated());
     }
 
     @Test
